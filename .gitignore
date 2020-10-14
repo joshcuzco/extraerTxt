@@ -1,2 +1,3 @@
-boletines_anuales
+boletines_anuales/*
+outs/*
 __pycache__
