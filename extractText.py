@@ -12,6 +12,11 @@ from pdf2image import convert_from_path
 import sys
 import re
 
+'''
+Núcleo de extracción de texto. Tomo una página, aplica un filtro,
+analiza la orientación, la rota si es necesario y obtiene el texto.
+'''
+
 def get_text(page):
 	'''
 	Extrae el texto como una sola string con OCR.
