@@ -25,8 +25,10 @@ class event:
 		self.region=''; self.intmer='';
 			
 	def tipob1(self,line,year,month):
-			#la linea en una página tipo b1 se ve
+			#boletines hasta 1981
+			#la línea en una página tipo b1 se ve
 			#dia hr min seg lat long prof mag dm ada rem erh erv region
+			# 0  1   2   3   4   5    6    7  8   9  10  11  12  13
 			try:
 				self.a=year
 				self.mes=month
@@ -50,8 +52,39 @@ class event:
 			except IndexError:
 				pass
 
+	def tipob2(self,line,year,intensity=''):
+		#boletines desde 1982
+		#la línea en una página tipo b2 se ve
+		#mes dia hr min seg lat long prof mag no dm ada rem erh erz region
+		# 0   1  2   3   4   5   6    7    8  9  10 11  12  13  14    15
+		if intensity:
+			self.intmer=intensity
+		try:
+			self.a=year
+			self.mes=jd(line[0])
+			self.d=jd(line[1])
+			self.h=jd(line[2])
+			self.min=jd(line[3])
+			self.seg=jd(line[4])
+			#
+			self.lat=coord(line[5])
+			self.lon=coord(line[6])
+			self.prof=jd(line[7])
+			#
+			self.mag=jd(line[8])
+			#
+			self.no=jd(line[9])
+			self.dm=jd(line[10])
+			self.ada=jd(line[11])
+			#
+			self.rem=jd(line[12])
+			self.erh=jd(line[13])
+			self.erz=jd(line[14])
+		except IndexError:
+			pass
+
 	def attributelist(self):
-		return [self.a,self.mes,self.d,self.h,self.min,self.seg,self.lat,self.lon,self.prof,self.rem,self.erh,self.erz,self.mag,self.dm,self.ada,self.no]
+		return [self.a,self.mes,self.d,self.h,self.min,self.seg,self.lat,self.lon,self.prof,self.rem,self.erh,self.erz,self.mag,self.dm,self.ada,self.no,self.intmer]
 
 	def dataline(self):
 		self.dl=','.join(self.attributelist())+'\n'
@@ -101,26 +134,38 @@ def process_page(page,year,tipo):
 	'''
 	text=eT.get_text(page)
 	output=''
+
 	if tipo=='b1':
 		month=search_month(text)
 
-		lines=text.split('\n')
-		for line in lines:
-			line=line.replace(',','.')
-			line_elements=line.split()
+	lines=text.split('\n')
+	for line in lines:
+		line=line.replace(',','.')
+		line_elements=line.split()
 
-			try:
-				l=int(line_elements[0])
-			except (ValueError, IndexError):
-				continue
+		try:
+			l=int(line_elements[0])
+		except (ValueError, IndexError):
+			continue
 
-			while not alldigits(line_elements[-1]):
-				discard=line_elements.pop()
+		if tipo=='b2s':
+			intensity=line_elements.pop()
+			discard=line_elements.pop(0)
+
+		while not alldigits(line_elements[-1]):
+			discard=line_elements.pop()
 	
-			s=event()
+		s=event()
+		if tipo=='b1':
 			s.tipob1(line_elements,year,month)
-			dataline=s.dataline()
-			output=output+dataline
+		if tipo=='b2':
+			s.tipob2(line_elements,year)
+		if tipo=='b2s':
+			s.tipob2(line_elements,year,intensity)
+
+		dataline=s.dataline()
+		output=output+dataline
+
 	return output
 
 

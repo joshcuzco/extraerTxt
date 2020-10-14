@@ -10,15 +10,20 @@ Convierte boletines anuales en archivos de valores separados por comas.
 def convert(year,fp,lp,tipo):
 	filename='Boletin_'+year+'_insivumeh.pdf'
 	pages=convert_from_path('boletines_anuales/'+filename,first_page=fp,last_page=lp)
+	if tipo=='b2s':
+		filename='sensibles_'+filename
 	with open('outs/'+filename.replace('.pdf','.csv'),'w') as output:
-		output.write('#año,mes,dia,hora,min,seg,latitud,longitud,profundidad,rem,erh,erz,magnitud,dm,ada,no\n')
+		output.write('#año,mes,dia,hora,min,seg,latitud,longitud,profundidad,rem,erh,erz,magnitud,dm,ada,no,int\n')
 	for page in pages:
 		page_text=dP.process_page(page,year,tipo)
 		with open('outs/'+filename.replace('.pdf','.csv'),'a') as output:
 			output.write(page_text)
 
 if __name__=="__main__":
-	files=[['1979',10,10,'b1']]
+	#test lists
+#	files=[['1979',10,10,'b1']]
+#	files=[['1982',32,32,'b2']]
+	files=[['1982',29,29,'b2s']]
 
 	for f in files:
 		year=f[0]
