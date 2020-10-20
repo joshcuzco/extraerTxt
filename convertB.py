@@ -23,7 +23,12 @@ if __name__=="__main__":
 	#test lists
 #	files=[['1979',10,10,'b1']]
 #	files=[['1982',32,32,'b2']]
-	files=[['1982',29,29,'b2s']]
+#	files=[['1982',29,29,'b2s']]
+	#el weno
+#	files=[['1977',9,24,'b1'],['1978',19,44,'b1'],['1979',7,90,'b1']]
+#	files=[['1980',12,66,'b1'],['1981',25,75,'b1'],['1982',32,123,'b2'],['1983',22,105,'b2']]
+	files=['1982',29,31,'b2s'],['1983',19,21,'b2s']]
+	#hay un pinche listado de sensibles en 1978, páginas 12-18
 
 	for f in files:
 		year=f[0]
@@ -31,3 +36,4 @@ if __name__=="__main__":
 		lp=f[2]
 		tipo=f[3]
 		convert(year,fp,lp,tipo)
+		print(year+'>> sin problemas')

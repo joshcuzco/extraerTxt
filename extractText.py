@@ -37,14 +37,23 @@ def rotate(page):
 	Detecta la orientación del texto y rota la página respectivamente.
 	'''
 	page.save('temp.jpg')
-	osd_info=pytesseract.image_to_osd(Image.open('temp.jpg'))
-	rot=re.search('(?<=Rotate: )\d+',osd_info).group(0)
-	rot=int(rot)
-	if rot!=0:
-		mask=Image.new('L',page.size,255)
-		page=page.rotate(360-rot,expand=True)
-		mask=mask.rotate(360-rot,expand=True)
-		page.save('temp.jpg','JPEG')
+
+	#todas las páginas con info de sismos tienen la misma orientación
+	mask=Image.new('L',page.size,255)
+	page=page.rotate(270,expand=True)
+	mask=mask.rotate(270,expand=True)
+	page.save('temp.jpg','JPEG')
+
+	#esta es una solución más general, pero si tesseract no detecta bien
+	#la orientación, el resultado no sirve :(
+#	osd_info=pytesseract.image_to_osd(Image.open('temp.jpg'))
+#	rot=re.search('(?<=Rotate: )\d+',osd_info).group(0)
+#	rot=int(rot)
+#	if rot!=0:
+#		mask=Image.new('L',page.size,255)
+#		page=page.rotate(360-rot,expand=True)
+#		mask=mask.rotate(360-rot,expand=True)
+#		page.save('temp.jpg','JPEG')
 
 if __name__=="__main__":
 	filename=sys.argv[1]
