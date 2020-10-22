@@ -48,7 +48,7 @@ class event:
 				#
 				self.rem=jd(line[10])
 				self.erh=jd(line[11])
-				self.erv=jd(line[12])
+				self.erz=jd(line[12])
 			except IndexError:
 				pass
 
@@ -94,7 +94,20 @@ def jd(text):
 	'''
 	Solo quiero los dígitos.
 	'''
-	return ''.join(c for c in text if c.isdigit() or c=='.')
+	justdigits=''.join(c for c in text if c.isdigit() or c=='.')
+	if alldots(justdigits):
+		return ''
+	return justdigits
+
+def alldots(text):
+	'''
+	Saber si todos los caracteres en una cadena son solo puntos.
+	'''
+	dots=True
+	for c in text:
+		if not c=='.':
+			dots=False
+	return dots
 
 def alldigits(text):
 	'''
