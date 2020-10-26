@@ -97,7 +97,12 @@ def jd(text):
 	justdigits=''.join(c for c in text if c.isdigit() or c=='.')
 	if alldots(justdigits):
 		return ''
+
+	if dupdpoints(justdigits):
+		return dupdpoint_remove(justdigits)
+	
 	return justdigits
+
 
 def alldots(text):
 	'''
@@ -108,6 +113,28 @@ def alldots(text):
 		if not c=='.':
 			dots=False
 	return dots
+
+def dupdpoints(string):
+	'''
+	Hay varios puntos en la cadena?
+	'''
+	if string.count('.')>1:
+		return True
+	return False
+
+def dupdpoint_remove(string):
+	'''
+	Remover puntos extra.
+	'''
+	first_point=False
+	new=''
+	for c in string:
+		if c=='.':
+			if first_point==True:
+				continue
+			first_point=True
+		new+=c
+	return new
 
 def alldigits(text):
 	'''
@@ -180,9 +207,3 @@ def process_page(page,year,tipo):
 		output=output+dataline
 
 	return output
-
-
-
-
-
-
