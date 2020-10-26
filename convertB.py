@@ -34,4 +34,4 @@ if __name__=="__main__":
 		lp=f[2]
 		tipo=f[3]
 		convert(year,fp,lp,tipo)
-		print(year+'>> sin problemas')
+		print(year+tipo+'>> sin problemas')
